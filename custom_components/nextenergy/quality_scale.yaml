@@ -1,0 +1,167 @@
+# Quality Scale for NextEnergy Integration
+# https://developers.home-assistant.io/docs/core/integration-quality-scale/
+
+rules:
+  # Bronze (Minimum Quality)
+  action-setup:
+    status: exempt
+    comment: Integration does not provide actions/services.
+  appropriate-polling:
+    status: done
+    comment: Uses 15-minute polling interval appropriate for energy price data.
+  brands:
+    status: todo
+    comment: Brand assets not yet submitted to home-assistant/brands.
+  common-modules:
+    status: done
+    comment: Uses standard Home Assistant modules and patterns.
+  config-flow:
+    status: done
+    comment: Full config flow with user setup implemented.
+  config-flow-test-coverage:
+    status: todo
+    comment: Tests for config flow not yet implemented.
+  dependency-transparency:
+    status: done
+    comment: Only uses aiohttp which is a standard HA dependency.
+  docs-actions:
+    status: exempt
+    comment: Integration does not provide actions/services.
+  docs-high-level-description:
+    status: todo
+    comment: README exists but could be improved.
+  docs-installation-instructions:
+    status: todo
+    comment: Installation instructions needed.
+  docs-removal-instructions:
+    status: todo
+    comment: Removal instructions needed.
+  entity-event-setup:
+    status: exempt
+    comment: Integration does not use event entities.
+  entity-unique-id:
+    status: done
+    comment: All entities have unique IDs based on entry_id and sensor type.
+  has-entity-name:
+    status: done
+    comment: All entities use has_entity_name = True.
+  runtime-data:
+    status: done
+    comment: Uses hass.data[DOMAIN] for runtime data storage.
+  test-before-configure:
+    status: done
+    comment: Config flow tests authentication before creating entry.
+  test-before-setup:
+    status: done
+    comment: Integration tests API connection during setup.
+  unique-config-entry:
+    status: done
+    comment: Uses username as unique_id to prevent duplicates.
+
+  # Silver (Quality)
+  action-exceptions:
+    status: exempt
+    comment: Integration does not provide actions/services.
+  config-entry-unloading:
+    status: done
+    comment: Proper unloading implemented with API session cleanup.
+  docs-configuration-parameters:
+    status: todo
+    comment: Configuration parameters documentation needed.
+  docs-installation-parameters:
+    status: todo
+    comment: Installation parameters documentation needed.
+  entity-unavailable:
+    status: done
+    comment: Tomorrow sensors properly show unavailable when data not available.
+  integration-owner:
+    status: done
+    comment: Codeowner specified in manifest.json.
+  log-when-unavailable:
+    status: done
+    comment: Logs debug messages when tomorrow's prices are unavailable.
+  parallel-updates:
+    status: exempt
+    comment: Single coordinator handles all updates.
+  reauthentication-flow:
+    status: done
+    comment: Reauth flow implemented in config_flow.py.
+  test-coverage:
+    status: todo
+    comment: Unit tests not yet implemented.
+
+  # Gold (Best Practices)
+  devices:
+    status: done
+    comment: Device info provided for all entities.
+  diagnostics:
+    status: done
+    comment: Diagnostics support implemented with proper redaction.
+  discovery:
+    status: exempt
+    comment: Cloud API integration, discovery not applicable.
+  discovery-update-info:
+    status: exempt
+    comment: Cloud API integration, discovery not applicable.
+  docs-data-update:
+    status: todo
+    comment: Data update documentation needed.
+  docs-examples:
+    status: todo
+    comment: Usage examples needed in documentation.
+  docs-known-limitations:
+    status: todo
+    comment: Known limitations documentation needed.
+  docs-supported-devices:
+    status: exempt
+    comment: Cloud API integration, not device-specific.
+  docs-supported-functions:
+    status: todo
+    comment: Supported functions documentation needed.
+  docs-troubleshooting:
+    status: todo
+    comment: Troubleshooting documentation needed.
+  docs-use-cases:
+    status: todo
+    comment: Use cases documentation needed.
+  dynamic-devices:
+    status: exempt
+    comment: Single device per config entry, no dynamic discovery.
+  entity-category:
+    status: todo
+    comment: Entity categories could be improved.
+  entity-device-class:
+    status: done
+    comment: All price sensors use MONETARY device class.
+  entity-disabled-by-default:
+    status: todo
+    comment: Consider disabling some sensors by default.
+  entity-translations:
+    status: todo
+    comment: Entity name translations not yet implemented.
+  exception-translations:
+    status: todo
+    comment: Exception message translations not yet implemented.
+  icon-translations:
+    status: todo
+    comment: Icon translations not yet implemented.
+  reconfiguration-flow:
+    status: todo
+    comment: Reconfiguration flow not yet implemented.
+  repair-issues:
+    status: todo
+    comment: Repair issues not yet implemented.
+  stale-devices:
+    status: exempt
+    comment: Single device per config entry, no stale device concerns.
+
+  # Platinum (Excellence)
+  async-dependency:
+    status: done
+    comment: Uses aiohttp for async HTTP requests.
+  inject-websession:
+    status: todo
+    comment: Could use Home Assistant's aiohttp session.
+  strict-typing:
+    status: todo
+    comment: Full strict typing not yet implemented.
