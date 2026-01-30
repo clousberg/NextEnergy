@@ -5,12 +5,11 @@ import logging
 from datetime import datetime, timedelta
 from typing import Any
 
-from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
 from .api import NextEnergyApi, NextEnergyApiError
-from .const import DOMAIN, SCAN_INTERVAL, CONF_COST_LEVEL, COST_LEVEL_MARKET_PLUS
+from .const import DOMAIN, SCAN_INTERVAL
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -19,8 +18,8 @@ class NextEnergyCoordinator(DataUpdateCoordinator[dict[str, Any]]):
     """NextEnergy data update coordinator."""
 
     def __init__(
-        self, 
-        hass: HomeAssistant, 
+        self,
+        hass: HomeAssistant,
         api: NextEnergyApi,
         cost_level: str,
     ) -> None:
@@ -40,18 +39,18 @@ class NextEnergyCoordinator(DataUpdateCoordinator[dict[str, Any]]):
             # Get today's prices
             today_prices = await self.api.get_hourly_prices(
                 date=datetime.now(),
-                cost_level=self.cost_level
+                cost_level=self.cost_level,
             )
 
             # Try to get tomorrow's prices (typically available after 14:00)
             tomorrow = datetime.now() + timedelta(days=1)
             tomorrow_prices = None
             tomorrow_available = False
-            
+
             try:
                 tomorrow_prices = await self.api.get_hourly_prices(
                     date=tomorrow,
-                    cost_level=self.cost_level
+                    cost_level=self.cost_level,
                 )
                 # Check if we actually got prices
                 if tomorrow_prices and tomorrow_prices.get("hourly_prices"):

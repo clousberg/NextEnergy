@@ -1,6 +1,7 @@
 # Ruff configuration for Home Assistant custom integration
 
 target-version = "py312"
+line-length = 88
 
 [lint]
 select = [
@@ -34,11 +35,12 @@ ignore = [
 
 [lint.per-file-ignores]
 "__init__.py" = ["F401"]  # Allow unused imports in __init__.py
+"const.py" = ["S105"]  # Allow password config key name
 
 [lint.isort]
-force-sort-within-sections = true
-known-first-party = ["custom_components.nextenergy"]
-combine-as-imports = true
+force-single-line = false
+lines-after-imports = 2
+known-first-party = ["custom_components"]
 
 [lint.pydocstyle]
 convention = "google"
