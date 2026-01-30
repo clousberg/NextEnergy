@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import logging
 import re
-from datetime import datetime, timedelta
+from datetime import datetime
 from typing import Any
 from urllib.parse import unquote
 
@@ -11,13 +11,13 @@ import aiohttp
 
 from .const import (
     BASE_URL,
+    COST_LEVEL_MARKET_PLUS,
     DEFAULT_API_VERSION_COSTS,
     DEFAULT_API_VERSION_PRICES,
     DEFAULT_MODULE_VERSION,
     LOGIN_URL,
     MODULE_VERSION_URL,
     PRICE_DATA_ENDPOINT,
-    COST_LEVEL_MARKET_PLUS,
 )
 
 _LOGGER = logging.getLogger(__name__)
@@ -67,14 +67,20 @@ class NextEnergyApi:
                     raise NextEnergyAuthError("Failed to load login page")
 
             # Get module version
-            async with session.get(f"{MODULE_VERSION_URL}?{int(datetime.now().timestamp() * 1000)}") as response:
+            version_url = f"{MODULE_VERSION_URL}?{int(datetime.now().timestamp() * 1000)}"
+            async with session.get(version_url) as response:
                 if response.status == 200:
                     data = await response.json()
-                    self._module_version = data.get("versionToken", DEFAULT_MODULE_VERSION)
+                    self._module_version = data.get(
+                        "versionToken", DEFAULT_MODULE_VERSION
+                    )
 
             # Perform login using OutSystems screenservices
-            login_endpoint = f"{BASE_URL}/Mobile_EnergyNext/screenservices/Mobile_EnergyNext/MainFlow/Login/ActionLogin"
-            
+            login_endpoint = (
+                f"{BASE_URL}/Mobile_EnergyNext/screenservices/"
+                "Mobile_EnergyNext/MainFlow/Login/ActionLogin"
+            )
+
             headers = {
                 "Content-Type": "application/json; charset=UTF-8",
                 "Accept": "application/json",
@@ -96,7 +102,9 @@ class NextEnergyApi:
                 }
             }
 
-            async with session.post(login_endpoint, json=login_body, headers=headers) as response:
+            async with session.post(
+                login_endpoint, json=login_body, headers=headers
+            ) as response:
                 if response.status != 200:
                     raise NextEnergyAuthError(f"Login failed with status {response.status}")
 
@@ -126,7 +134,11 @@ class NextEnergyApi:
         except aiohttp.ClientError as err:
             raise NextEnergyApiError(f"Connection error: {err}") from err
 
-    async def get_hourly_prices(self, date: datetime | None = None, cost_level: str = COST_LEVEL_MARKET_PLUS) -> dict[str, Any]:
+    async def get_hourly_prices(
+        self,
+        date: datetime | None = None,
+        cost_level: str = COST_LEVEL_MARKET_PLUS,
+    ) -> dict[str, Any]:
         """Get hourly electricity prices for a given date."""
         if not self._session_cookie:
             await self.authenticate()
