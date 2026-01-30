@@ -67,7 +67,8 @@ class NextEnergyApi:
                     raise NextEnergyAuthError("Failed to load login page")
 
             # Get module version
-            version_url = f"{MODULE_VERSION_URL}?{int(datetime.now().timestamp() * 1000)}"
+            timestamp = int(datetime.now().timestamp() * 1000)
+            version_url = f"{MODULE_VERSION_URL}?{timestamp}"
             async with session.get(version_url) as response:
                 if response.status == 200:
                     data = await response.json()
@@ -90,28 +91,31 @@ class NextEnergyApi:
             login_body = {
                 "versionInfo": {
                     "moduleVersion": self._module_version,
-                    "apiVersion": self._module_version
+                    "apiVersion": self._module_version,
                 },
                 "viewName": "MainFlow.Login",
                 "screenData": {
                     "variables": {
                         "Username": self.username,
                         "Password": self.password,
-                        "RememberUsername": False
+                        "RememberUsername": False,
                     }
-                }
+                },
             }
 
             async with session.post(
                 login_endpoint, json=login_body, headers=headers
             ) as response:
                 if response.status != 200:
-                    raise NextEnergyAuthError(f"Login failed with status {response.status}")
+                    raise NextEnergyAuthError(
+                        f"Login failed with status {response.status}"
+                    )
 
                 result = await response.json()
-                
-                if "exception" in result and result["exception"]:
-                    raise NextEnergyAuthError(f"Login failed: {result['exception'].get('message', 'Unknown error')}")
+
+                if result.get("exception"):
+                    error_msg = result["exception"].get("message", "Unknown error")
+                    raise NextEnergyAuthError(f"Login failed: {error_msg}")
 
             # Extract session cookie
             cookies = session.cookie_jar.filter_cookies(BASE_URL)
@@ -120,7 +124,7 @@ class NextEnergyApi:
                     self._session_cookie = cookie.value
                     # Extract CSRF token from cookie
                     decoded = unquote(cookie.value)
-                    csrf_match = re.search(r'crf=([^;]+)', decoded)
+                    csrf_match = re.search(r"crf=([^;]+)", decoded)
                     if csrf_match:
                         self._csrf_token = csrf_match.group(1)
                     break
@@ -144,7 +148,7 @@ class NextEnergyApi:
             await self.authenticate()
 
         session = await self._get_session()
-        
+
         if date is None:
             date = datetime.now()
 
@@ -160,7 +164,7 @@ class NextEnergyApi:
         body = {
             "versionInfo": {
                 "moduleVersion": self._module_version,
-                "apiVersion": self._api_version_prices
+                "apiVersion": self._api_version_prices,
             },
             "viewName": "MainFlow.MarketPrices",
             "screenData": {
@@ -168,23 +172,27 @@ class NextEnergyApi:
                     "DateTime": f"{date_str}T00:00:00Z",
                     "_dateTimeInDataFetchStatus": 1,
                     "ContractId": 0,
-                    "_contractIdInDataFetchStatus": 1
+                    "_contractIdInDataFetchStatus": 1,
                 }
             },
             "clientVariables": {
                 "PriceDate": date_str,
-                "PriceCostsLevelId": cost_level
-            }
+                "PriceCostsLevelId": cost_level,
+            },
         }
 
         try:
-            async with session.post(PRICE_DATA_ENDPOINT, json=body, headers=headers) as response:
+            async with session.post(
+                PRICE_DATA_ENDPOINT, json=body, headers=headers
+            ) as response:
                 if response.status != 200:
-                    raise NextEnergyApiError(f"Failed to get prices: status {response.status}")
+                    raise NextEnergyApiError(
+                        f"Failed to get prices: status {response.status}"
+                    )
 
                 result = await response.json()
 
-                if "exception" in result and result["exception"]:
+                if result.get("exception"):
                     error_msg = result["exception"].get("message", "Unknown error")
                     if "Invalid Login" in error_msg:
                         # Session expired, re-authenticate
@@ -198,14 +206,16 @@ class NextEnergyApi:
         except aiohttp.ClientError as err:
             raise NextEnergyApiError(f"Connection error: {err}") from err
 
-    def _parse_price_response(self, response: dict[str, Any], date: datetime) -> dict[str, Any]:
+    def _parse_price_response(
+        self, response: dict[str, Any], date: datetime
+    ) -> dict[str, Any]:
         """Parse the price response from the API."""
         data = response.get("data", {})
-        
+
         # Extract hourly prices
         hourly_prices = {}
         pricing_list = data.get("PricingList", [])
-        
+
         for item in pricing_list:
             hour = item.get("Hour", 0)
             price = item.get("Price", 0)
@@ -219,15 +229,25 @@ class NextEnergyApi:
         gas_price = data.get("GasPrice", 0)
 
         # Calculate off-peak average (typically 00:00-06:00)
-        off_peak_prices = [hourly_prices.get(h, 0) for h in range(0, 6)]
-        avg_off_peak = sum(off_peak_prices) / len(off_peak_prices) if off_peak_prices else 0
+        off_peak_prices = [hourly_prices.get(h, 0) for h in range(6)]
+        avg_off_peak = (
+            sum(off_peak_prices) / len(off_peak_prices) if off_peak_prices else 0
+        )
 
         # Find min and max prices
         all_prices = list(hourly_prices.values())
         min_price = min(all_prices) if all_prices else 0
         max_price = max(all_prices) if all_prices else 0
-        min_price_hour = [h for h, p in hourly_prices.items() if p == min_price][0] if all_prices else 0
-        max_price_hour = [h for h, p in hourly_prices.items() if p == max_price][0] if all_prices else 0
+        min_price_hour = next(
+            (h for h, p in hourly_prices.items() if p == min_price), 0
+        )
+        max_price_hour = next(
+            (h for h, p in hourly_prices.items() if p == max_price), 0
+        )
+
+        avg_price = (
+            round(sum(all_prices) / len(all_prices), 4) if all_prices else 0
+        )
 
         return {
             "date": date.strftime("%Y-%m-%d"),
@@ -236,7 +256,7 @@ class NextEnergyApi:
             "current_price": round(current_price, 4),
             "gas_price": round(gas_price, 4),
             "average_off_peak": round(avg_off_peak, 4),
-            "average_price": round(sum(all_prices) / len(all_prices), 4) if all_prices else 0,
+            "average_price": avg_price,
             "min_price": round(min_price, 4),
             "max_price": round(max_price, 4),
             "min_price_hour": min_price_hour,
