@@ -11,7 +11,8 @@ Home Assistant integration NextEnergy (Dutch Energy supplier)
 ![Status](https://img.shields.io/badge/status-work_in_progress-orange)
 ![Stability](https://img.shields.io/badge/stability-unstable-red)
 
-Validation status:
+# Validation status:
+
 [![Validate with HACS Validation](https://github.com/clousberg/NextEnergy/actions/workflows/hacs.yaml/badge.svg)](https://github.com/clousberg/NextEnergy/actions/workflows/hacs.yaml)
 [![HASSfest](https://github.com/clousberg/NextEnergy/actions/workflows/hassfest.yaml/badge.svg)](https://github.com/clousberg/NextEnergy/actions/workflows/hassfest.yaml)
 [![Validate with Ruff Lint](https://github.com/clousberg/NextEnergy/actions/workflows/ruff_lint.yaml/badge.svg)](https://github.com/clousberg/NextEnergy/actions/workflows/ruff_lint.yaml)
