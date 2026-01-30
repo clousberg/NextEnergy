@@ -12,9 +12,9 @@ Home Assistant integration NextEnergy (Dutch Energy supplier)
 ![Stability](https://img.shields.io/badge/stability-unstable-red)
 
 Validation status:
-[![Validate](https://github.com/clousberg/NextEnergy/actions/workflows/validate.yaml/badge.svg)](https://github.com/clousberg/NextEnergy/actions/workflows/validate.yaml)
+[![Validate with HACS Validation](https://github.com/clousberg/NextEnergy/actions/workflows/hacs.yaml/badge.svg)](https://github.com/clousberg/NextEnergy/actions/workflows/hacs.yaml)
 [![HASSfest](https://github.com/clousberg/NextEnergy/actions/workflows/hassfest.yaml/badge.svg)](https://github.com/clousberg/NextEnergy/actions/workflows/hassfest.yaml)
-[![Ruff Lint](https://github.com/clousberg/NextEnergy/actions/workflows/Ruff%20Lint.yaml/badge.svg)](https://github.com/clousberg/NextEnergy/actions/workflows/Ruff%20Lint.yaml)
+[![Validate with Ruff Lint](https://github.com/clousberg/NextEnergy/actions/workflows/ruff_lint.yaml/badge.svg)](https://github.com/clousberg/NextEnergy/actions/workflows/ruff_lint.yaml)
 [![Type Checking](https://github.com/clousberg/NextEnergy/actions/workflows/type_checking.yaml/badge.svg)](https://github.com/clousberg/NextEnergy/actions/workflows/type_checking.yaml)
 
 # NextEnergy Home Assistant Integration
