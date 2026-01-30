@@ -1,7 +1,7 @@
 """Sensor platform for NextEnergy."""
+
 from __future__ import annotations
 
-from datetime import datetime
 from typing import Any
 
 from homeassistant.components.sensor import (
@@ -16,7 +16,7 @@ from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
-from .const import DOMAIN, CONF_COST_LEVEL, COST_LEVEL_MARKET_PLUS
+from .const import CONF_COST_LEVEL, COST_LEVEL_MARKET_PLUS, DOMAIN
 from .coordinator import NextEnergyCoordinator
 
 
@@ -26,7 +26,9 @@ async def async_setup_entry(
     async_add_entities: AddEntitiesCallback,
 ) -> None:
     """Set up NextEnergy sensor entities."""
-    coordinator: NextEnergyCoordinator = hass.data[DOMAIN][entry.entry_id]["coordinator"]
+    coordinator: NextEnergyCoordinator = hass.data[DOMAIN][entry.entry_id][
+        "coordinator"
+    ]
 
     entities = [
         # Today's sensors
@@ -80,6 +82,7 @@ class NextEnergySensorBase(CoordinatorEntity[NextEnergyCoordinator], SensorEntit
 
 # ========== TODAY'S SENSORS ==========
 
+
 class NextEnergyCurrentPriceSensor(NextEnergySensorBase):
     """Sensor for current electricity price."""
 
@@ -90,7 +93,9 @@ class NextEnergyCurrentPriceSensor(NextEnergySensorBase):
 
     def __init__(self, coordinator: NextEnergyCoordinator, entry: ConfigEntry) -> None:
         """Initialize the sensor."""
-        super().__init__(coordinator, entry, "current_price", "Current Electricity Price")
+        super().__init__(
+            coordinator, entry, "current_price", "Current Electricity Price"
+        )
 
     @property
     def native_value(self) -> float | None:
@@ -142,7 +147,9 @@ class NextEnergyAverageOffPeakSensor(NextEnergySensorBase):
 
     def __init__(self, coordinator: NextEnergyCoordinator, entry: ConfigEntry) -> None:
         """Initialize the sensor."""
-        super().__init__(coordinator, entry, "average_offpeak", "Average Off-Peak Price")
+        super().__init__(
+            coordinator, entry, "average_offpeak", "Average Off-Peak Price"
+        )
 
     @property
     def native_value(self) -> float | None:
@@ -236,7 +243,9 @@ class NextEnergyHourlyPricesSensor(NextEnergySensorBase):
 
     def __init__(self, coordinator: NextEnergyCoordinator, entry: ConfigEntry) -> None:
         """Initialize the sensor."""
-        super().__init__(coordinator, entry, "hourly_prices_today", "Hourly Prices Today")
+        super().__init__(
+            coordinator, entry, "hourly_prices_today", "Hourly Prices Today"
+        )
 
     @property
     def native_value(self) -> float | None:
@@ -253,7 +262,11 @@ class NextEnergyHourlyPricesSensor(NextEnergySensorBase):
             today = self.coordinator.data["today"]
             hourly = today.get("hourly_prices", {})
             for hour, price in hourly.items():
-                hour_key = f"hour_{int(hour):02d}" if isinstance(hour, (int, float)) else f"hour_{hour}"
+                hour_key = (
+                    f"hour_{int(hour):02d}"
+                    if isinstance(hour, (int, float))
+                    else f"hour_{hour}"
+                )
                 attrs[hour_key] = price
             attrs["average"] = today.get("average_price")
             attrs["min"] = today.get("min_price")
@@ -266,6 +279,7 @@ class NextEnergyHourlyPricesSensor(NextEnergySensorBase):
 
 # ========== TOMORROW'S SENSORS ==========
 
+
 class NextEnergyTomorrowAvailableSensor(NextEnergySensorBase):
     """Sensor indicating if tomorrow's prices are available."""
 
@@ -273,7 +287,9 @@ class NextEnergyTomorrowAvailableSensor(NextEnergySensorBase):
 
     def __init__(self, coordinator: NextEnergyCoordinator, entry: ConfigEntry) -> None:
         """Initialize the sensor."""
-        super().__init__(coordinator, entry, "tomorrow_available", "Tomorrow Prices Available")
+        super().__init__(
+            coordinator, entry, "tomorrow_available", "Tomorrow Prices Available"
+        )
 
     @property
     def native_value(self) -> bool:
@@ -293,7 +309,9 @@ class NextEnergyTomorrowAveragePriceSensor(NextEnergySensorBase):
 
     def __init__(self, coordinator: NextEnergyCoordinator, entry: ConfigEntry) -> None:
         """Initialize the sensor."""
-        super().__init__(coordinator, entry, "average_price_tomorrow", "Average Price Tomorrow")
+        super().__init__(
+            coordinator, entry, "average_price_tomorrow", "Average Price Tomorrow"
+        )
 
     @property
     def native_value(self) -> float | None:
@@ -305,7 +323,9 @@ class NextEnergyTomorrowAveragePriceSensor(NextEnergySensorBase):
     @property
     def available(self) -> bool:
         """Return if sensor is available."""
-        return self.coordinator.data is not None and self.coordinator.data.get("tomorrow_available", False)
+        return self.coordinator.data is not None and self.coordinator.data.get(
+            "tomorrow_available", False
+        )
 
 
 class NextEnergyTomorrowMinPriceSensor(NextEnergySensorBase):
@@ -318,7 +338,9 @@ class NextEnergyTomorrowMinPriceSensor(NextEnergySensorBase):
 
     def __init__(self, coordinator: NextEnergyCoordinator, entry: ConfigEntry) -> None:
         """Initialize the sensor."""
-        super().__init__(coordinator, entry, "min_price_tomorrow", "Minimum Price Tomorrow")
+        super().__init__(
+            coordinator, entry, "min_price_tomorrow", "Minimum Price Tomorrow"
+        )
 
     @property
     def native_value(self) -> float | None:
@@ -330,7 +352,9 @@ class NextEnergyTomorrowMinPriceSensor(NextEnergySensorBase):
     @property
     def available(self) -> bool:
         """Return if sensor is available."""
-        return self.coordinator.data is not None and self.coordinator.data.get("tomorrow_available", False)
+        return self.coordinator.data is not None and self.coordinator.data.get(
+            "tomorrow_available", False
+        )
 
     @property
     def extra_state_attributes(self) -> dict[str, Any]:
@@ -350,7 +374,9 @@ class NextEnergyTomorrowMaxPriceSensor(NextEnergySensorBase):
 
     def __init__(self, coordinator: NextEnergyCoordinator, entry: ConfigEntry) -> None:
         """Initialize the sensor."""
-        super().__init__(coordinator, entry, "max_price_tomorrow", "Maximum Price Tomorrow")
+        super().__init__(
+            coordinator, entry, "max_price_tomorrow", "Maximum Price Tomorrow"
+        )
 
     @property
     def native_value(self) -> float | None:
@@ -362,7 +388,9 @@ class NextEnergyTomorrowMaxPriceSensor(NextEnergySensorBase):
     @property
     def available(self) -> bool:
         """Return if sensor is available."""
-        return self.coordinator.data is not None and self.coordinator.data.get("tomorrow_available", False)
+        return self.coordinator.data is not None and self.coordinator.data.get(
+            "tomorrow_available", False
+        )
 
     @property
     def extra_state_attributes(self) -> dict[str, Any]:
@@ -382,7 +410,9 @@ class NextEnergyTomorrowHourlyPricesSensor(NextEnergySensorBase):
 
     def __init__(self, coordinator: NextEnergyCoordinator, entry: ConfigEntry) -> None:
         """Initialize the sensor."""
-        super().__init__(coordinator, entry, "hourly_prices_tomorrow", "Hourly Prices Tomorrow")
+        super().__init__(
+            coordinator, entry, "hourly_prices_tomorrow", "Hourly Prices Tomorrow"
+        )
 
     @property
     def native_value(self) -> float | None:
@@ -394,7 +424,9 @@ class NextEnergyTomorrowHourlyPricesSensor(NextEnergySensorBase):
     @property
     def available(self) -> bool:
         """Return if sensor is available."""
-        return self.coordinator.data is not None and self.coordinator.data.get("tomorrow_available", False)
+        return self.coordinator.data is not None and self.coordinator.data.get(
+            "tomorrow_available", False
+        )
 
     @property
     def extra_state_attributes(self) -> dict[str, Any]:
@@ -404,7 +436,11 @@ class NextEnergyTomorrowHourlyPricesSensor(NextEnergySensorBase):
             tomorrow = self.coordinator.data["tomorrow"]
             hourly = tomorrow.get("hourly_prices", {})
             for hour, price in hourly.items():
-                hour_key = f"hour_{int(hour):02d}" if isinstance(hour, (int, float)) else f"hour_{hour}"
+                hour_key = (
+                    f"hour_{int(hour):02d}"
+                    if isinstance(hour, (int, float))
+                    else f"hour_{hour}"
+                )
                 attrs[hour_key] = price
             attrs["average"] = tomorrow.get("average_price")
             attrs["min"] = tomorrow.get("min_price")

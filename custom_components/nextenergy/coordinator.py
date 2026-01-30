@@ -1,4 +1,5 @@
 """DataUpdateCoordinator for NextEnergy."""
+
 from __future__ import annotations
 
 import logging

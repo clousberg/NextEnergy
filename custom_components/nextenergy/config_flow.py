@@ -1,11 +1,11 @@
 """Config flow for NextEnergy integration."""
+
 from __future__ import annotations
 
 import logging
 from typing import Any
 
 import voluptuous as vol
-
 from homeassistant import config_entries
 from homeassistant.core import callback
 from homeassistant.data_entry_flow import FlowResult
@@ -26,9 +26,9 @@ STEP_USER_DATA_SCHEMA = vol.Schema(
     {
         vol.Required(CONF_USERNAME): str,
         vol.Required(CONF_PASSWORD): str,
-        vol.Required(
-            CONF_COST_LEVEL, default=COST_LEVEL_MARKET_PLUS
-        ): vol.In(COST_LEVEL_OPTIONS),
+        vol.Required(CONF_COST_LEVEL, default=COST_LEVEL_MARKET_PLUS): vol.In(
+            COST_LEVEL_OPTIONS
+        ),
     }
 )
 
@@ -79,9 +79,7 @@ class NextEnergyConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             errors=errors,
         )
 
-    async def async_step_reauth(
-        self, entry_data: dict[str, Any]
-    ) -> FlowResult:
+    async def async_step_reauth(self, entry_data: dict[str, Any]) -> FlowResult:
         """Handle reauth flow."""
         return await self.async_step_user()
 

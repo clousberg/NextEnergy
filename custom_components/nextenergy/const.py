@@ -1,4 +1,5 @@
 """Constants for the NextEnergy integration."""
+
 from datetime import timedelta
 
 DOMAIN = "nextenergy"

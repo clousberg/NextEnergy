@@ -1,4 +1,5 @@
 """NextEnergy API client."""
+
 from __future__ import annotations
 
 import logging
@@ -245,9 +246,7 @@ class NextEnergyApi:
             (h for h, p in hourly_prices.items() if p == max_price), 0
         )
 
-        avg_price = (
-            round(sum(all_prices) / len(all_prices), 4) if all_prices else 0
-        )
+        avg_price = round(sum(all_prices) / len(all_prices), 4) if all_prices else 0
 
         return {
             "date": date.strftime("%Y-%m-%d"),

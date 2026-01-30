@@ -1,4 +1,5 @@
 """Diagnostics support for NextEnergy."""
+
 from __future__ import annotations
 
 from typing import Any
@@ -29,6 +30,7 @@ async def async_get_config_entry_diagnostics(
     coordinator = hass.data[DOMAIN][entry.entry_id]["coordinator"]
     api = hass.data[DOMAIN][entry.entry_id]["api"]
 
+    last_exception = coordinator.last_exception
     diagnostics_data = {
         "config_entry": {
             "entry_id": entry.entry_id,
@@ -40,17 +42,19 @@ async def async_get_config_entry_diagnostics(
         },
         "coordinator": {
             "last_update_success": coordinator.last_update_success,
-            "last_exception": str(coordinator.last_exception) if coordinator.last_exception else None,
+            "last_exception": str(last_exception) if last_exception else None,
             "update_interval": str(coordinator.update_interval),
             "cost_level": coordinator.cost_level,
         },
         "api": {
-            "authenticated": api.authenticated if hasattr(api, "authenticated") else None,
-            "module_version": api.module_version if hasattr(api, "module_version") else None,
-            "api_version_prices": api.api_version_prices if hasattr(api, "api_version_prices") else None,
-            "api_version_costs": api.api_version_costs if hasattr(api, "api_version_costs") else None,
+            "authenticated": getattr(api, "authenticated", None),
+            "module_version": getattr(api, "module_version", None),
+            "api_version_prices": getattr(api, "api_version_prices", None),
+            "api_version_costs": getattr(api, "api_version_costs", None),
         },
-        "data": async_redact_data(coordinator.data, TO_REDACT) if coordinator.data else None,
+        "data": (
+            async_redact_data(coordinator.data, TO_REDACT) if coordinator.data else None
+        ),
     }
 
     return diagnostics_data
