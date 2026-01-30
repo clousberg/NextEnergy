@@ -54,7 +54,3 @@ Add the following to configuration.yaml.
 
 ## License
 This project is licensed under the MIT License - see the LICENSE file for details.
-
-## THANKS
-Big thanks to https://github.com/iacavd/NextEnergyPricesHA and https://github.com/ServError/NextEnergyPricesHA
-for the analysis and coding!
