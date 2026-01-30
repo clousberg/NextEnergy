@@ -1,0 +1,80 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "NextEnergy Inloggen",
+        "description": "Voer je NextEnergy (mijn.nextenergy.nl) inloggegevens in en selecteer je tarieftype.",
+        "data": {
+          "username": "Gebruikersnaam",
+          "password": "Wachtwoord",
+          "cost_level": "Tarieftype"
+        },
+        "data_description": {
+          "cost_level": "Market = alleen energieprijs, Market+ = energieprijs inclusief belastingen en toeslagen"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Kan geen verbinding maken met NextEnergy",
+      "invalid_auth": "Ongeldige gebruikersnaam of wachtwoord",
+      "unknown": "Onverwachte fout opgetreden"
+    },
+    "abort": {
+      "already_configured": "Dit account is al geconfigureerd"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "NextEnergy Opties",
+        "description": "Configureer je NextEnergy integratie instellingen.",
+        "data": {
+          "cost_level": "Tarieftype"
+        },
+        "data_description": {
+          "cost_level": "Market = alleen energieprijs, Market+ = energieprijs inclusief belastingen en toeslagen"
+        }
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "current_price": {
+        "name": "Huidige Elektriciteitsprijs"
+      },
+      "gas_price": {
+        "name": "Gasprijs"
+      },
+      "average_offpeak": {
+        "name": "Gemiddelde Dalprijs"
+      },
+      "min_price": {
+        "name": "Minimumprijs Vandaag"
+      },
+      "max_price": {
+        "name": "Maximumprijs Vandaag"
+      },
+      "average_price": {
+        "name": "Gemiddelde Prijs Vandaag"
+      },
+      "hourly_prices_today": {
+        "name": "Uurprijzen Vandaag"
+      },
+      "tomorrow_available": {
+        "name": "Morgen Prijzen Beschikbaar"
+      },
+      "average_price_tomorrow": {
+        "name": "Gemiddelde Prijs Morgen"
+      },
+      "min_price_tomorrow": {
+        "name": "Minimumprijs Morgen"
+      },
+      "max_price_tomorrow": {
+        "name": "Maximumprijs Morgen"
+      },
+      "hourly_prices_tomorrow": {
+        "name": "Uurprijzen Morgen"
+      }
+    }
+  }
+}

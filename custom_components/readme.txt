@@ -1,0 +1,3 @@
+Sensors Created:
+SensorDescriptionTodaycurrent_electricity_priceCurrent hour pricegas_priceCurrent gas priceaverage_off_peak_priceAverage price 00:00-06:00minimum_price_todayLowest price todaymaximum_price_todayHighest price todayaverage_price_todayAverage price todayhourly_prices_todayAll 24 hours as attributesTomorrowtomorrow_prices_availableBoolean if tomorrow's prices are availableaverage_price_tomorrowAverage price tomorrowminimum_price_tomorrowLowest price tomorrowmaximum_price_tomorrowHighest price tomorrowhourly_prices_tomorrowAll 24 hours as attributes
+Tomorrow's sensors will show as unavailable until the prices are published (typically after 14:00).

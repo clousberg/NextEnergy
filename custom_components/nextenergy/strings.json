@@ -1,0 +1,40 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "NextEnergy Login",
+        "description": "Enter your NextEnergy (mijn.nextenergy.nl) credentials and select your tariff type.",
+        "data": {
+          "username": "Username",
+          "password": "Password",
+          "cost_level": "Tariff Type"
+        },
+        "data_description": {
+          "cost_level": "Market = energy price only, Market+ = energy price including taxes and fees"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Failed to connect to NextEnergy",
+      "invalid_auth": "Invalid username or password",
+      "unknown": "Unexpected error occurred"
+    },
+    "abort": {
+      "already_configured": "This account is already configured"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "NextEnergy Options",
+        "description": "Configure your NextEnergy integration settings.",
+        "data": {
+          "cost_level": "Tariff Type"
+        },
+        "data_description": {
+          "cost_level": "Market = energy price only, Market+ = energy price including taxes and fees"
+        }
+      }
+    }
+  }
+}
