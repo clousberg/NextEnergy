@@ -10,5 +10,6 @@
   "issue_tracker": "https://github.com/clousberg/NextEnergy/issues",
   "loggers": ["custom_components.nextenergy"],
   "requirements": ["aiohttp>=3.8.0"],
-  "version": "1.0.0"
+  "version": "0.1"
 }
+
