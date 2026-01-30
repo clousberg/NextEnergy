@@ -1,5 +1,7 @@
 {
   "name": "NextEnergy",
   "render_readme": true,
-  "content_in_root": false
+  "content_in_root": false,
+  "country": "NL",
+  "homeassistant": "2025.9.0"
 }
