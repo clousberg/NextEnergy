@@ -14,10 +14,10 @@ Home Assistant integration NextEnergy (Dutch Energy supplier)
 # NextEnergy Home Assistant Integration
 
 [![HACS](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://hacs.xyz/)
-[![Version](https://img.shields.io/github/v/release/clousberg/NextEnergyAPI)](https://github.com/clousberg/NextEnergyAPI/releases)
+[![Version](https://img.shields.io/github/v/release/clousberg/NextEnergy)](https://github.com/clousberg/NextEnergy/releases)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Issues](https://img.shields.io/github/issues/clousberg/NextEnergyAPI)](https://github.com/clousberg/NextEnergyAPI/issues)
-[![Quality Scale](https://img.shields.io/badge/Quality-Silver-yellow)](https://developers.home-assistant.io/docs/quality_scale/)
+[![Issues](https://img.shields.io/github/issues/clousberg/NextEnergy)](https://github.com/clousberg/NextEnergy/issues)
+[![Quality Scale](https://img.shields.io/badge/Quality-Bronze-yellow)](https://developers.home-assistant.io/docs/quality_scale/)
 
 ## Description
 NextEnergy API integration for Home Assistant. Provides current and next hour electricity prices via sensors.
