@@ -11,9 +11,18 @@ MODULE_VERSION_URL = f"{BASE_URL}/Mobile_EnergyNext/moduleservices/moduleversion
 SCREENSERVICES_URL = f"{BASE_URL}/Mobile_EnergyNext/screenservices"
 
 # API Endpoints
-PRICE_DATA_ENDPOINT = f"{SCREENSERVICES_URL}/Mobile_EnergyNext_CW/WidgetFlow/MarketPrices_Quarterly/DataActionGetPriceDataPoints"
-COSTS_LEVELS_ENDPOINT = f"{SCREENSERVICES_URL}/CustomerPortal_CW/ReusableFlow/PriceCostsLevelSelector_NEW/ScreenDataSetGetCostsLevels"
-SITE_PROPERTIES_ENDPOINT = f"{SCREENSERVICES_URL}/Mobile_EnergyNext_CW/WidgetFlow/MarketPrices_Quarterly/DataActionGetSiteProperties"
+PRICE_DATA_ENDPOINT = (
+    f"{SCREENSERVICES_URL}/Mobile_EnergyNext_CW/WidgetFlow/"
+    "MarketPrices_Quarterly/DataActionGetPriceDataPoints"
+)
+COSTS_LEVELS_ENDPOINT = (
+    f"{SCREENSERVICES_URL}/CustomerPortal_CW/ReusableFlow/"
+    "PriceCostsLevelSelector_NEW/ScreenDataSetGetCostsLevels"
+)
+SITE_PROPERTIES_ENDPOINT = (
+    f"{SCREENSERVICES_URL}/Mobile_EnergyNext_CW/WidgetFlow/"
+    "MarketPrices_Quarterly/DataActionGetSiteProperties"
+)
 
 # Default API versions (may need updating when NextEnergy deploys)
 DEFAULT_MODULE_VERSION = "70n6yEAoyavGBAoPNutE2Q"

@@ -10,15 +10,14 @@ from homeassistant import config_entries
 from homeassistant.core import callback
 from homeassistant.data_entry_flow import FlowResult
 
-from .api import NextEnergyApi, NextEnergyAuthError, NextEnergyApiError
+from .api import NextEnergyApi, NextEnergyApiError, NextEnergyAuthError
 from .const import (
-    DOMAIN,
-    CONF_USERNAME,
-    CONF_PASSWORD,
     CONF_COST_LEVEL,
-    COST_LEVEL_MARKET,
+    CONF_PASSWORD,
+    CONF_USERNAME,
     COST_LEVEL_MARKET_PLUS,
     COST_LEVEL_OPTIONS,
+    DOMAIN,
 )
 
 _LOGGER = logging.getLogger(__name__)
@@ -27,7 +26,9 @@ STEP_USER_DATA_SCHEMA = vol.Schema(
     {
         vol.Required(CONF_USERNAME): str,
         vol.Required(CONF_PASSWORD): str,
-        vol.Required(CONF_COST_LEVEL, default=COST_LEVEL_MARKET_PLUS): vol.In(COST_LEVEL_OPTIONS),
+        vol.Required(
+            CONF_COST_LEVEL, default=COST_LEVEL_MARKET_PLUS
+        ): vol.In(COST_LEVEL_OPTIONS),
     }
 )
 
@@ -65,8 +66,10 @@ class NextEnergyConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 _LOGGER.exception("Unexpected exception")
                 errors["base"] = "unknown"
             else:
+                username = user_input[CONF_USERNAME]
+                cost_level = user_input[CONF_COST_LEVEL]
                 return self.async_create_entry(
-                    title=f"NextEnergy ({user_input[CONF_USERNAME]}) - {user_input[CONF_COST_LEVEL]}",
+                    title=f"NextEnergy ({username}) - {cost_level}",
                     data=user_input,
                 )
 
@@ -110,13 +113,16 @@ class NextEnergyOptionsFlow(config_entries.OptionsFlow):
             )
             return self.async_create_entry(title="", data=user_input)
 
+        current_cost_level = self.config_entry.data.get(
+            CONF_COST_LEVEL, COST_LEVEL_MARKET_PLUS
+        )
         return self.async_show_form(
             step_id="init",
             data_schema=vol.Schema(
                 {
                     vol.Required(
                         CONF_COST_LEVEL,
-                        default=self.config_entry.data.get(CONF_COST_LEVEL, COST_LEVEL_MARKET_PLUS),
+                        default=current_cost_level,
                     ): vol.In(COST_LEVEL_OPTIONS),
                 }
             ),
